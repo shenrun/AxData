@@ -126,13 +126,13 @@ Ubuntu / Debian 自带的 `nodejs` 版本可能偏旧；如果 `node --version` 
 
 </details>
 
-PyPI 发布后，如果只需要在脚本、Notebook 或命令行里使用 Python SDK/CLI，可安装轻量包：
+如果只需要在脚本、Notebook 或命令行里使用 Python SDK/CLI，可以直接安装 Python 包：
 
 ```powershell
 pip install axdata
 ```
 
-`pip install axdata` 面向 Python SDK 和 CLI 使用，会安装 AxData Python 主包、核心依赖，以及当前发行版随包提供的数据源能力。具体可用接口以当前版本的接口目录和插件列表为准；完整 Web 控制台和前端源码请使用上面的完整项目安装方式。
+`pip install axdata` 面向 Python SDK 和 CLI 使用，会安装 AxData Python 主包、核心依赖，以及随包提供的数据源能力。完整 Web 控制台、接口文档、本地 API 服务和前端源码请使用上面的完整项目安装方式。
 
 ## 核心能力
 

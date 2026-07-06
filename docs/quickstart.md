@@ -1,6 +1,6 @@
 # AxData 快速开始
 
-本文介绍 AxData 的本地安装、启动和常用入口。优先推荐完整项目安装，它包含 Python SDK、CLI、API 和 Web 控制台；只在脚本或 Notebook 中使用 SDK 时，再选择轻量 `pip install axdata`。Windows 使用 PowerShell 命令，macOS/Linux 使用 Bash 命令。想写新插件时，直接跳到 [plugin-development.md](plugin-development.md)。
+本文介绍 AxData 的本地安装、启动和常用入口。优先推荐完整项目安装，它包含 Python SDK、CLI、API 和 Web 控制台；只在脚本或 Notebook 中使用 SDK 时，也可以直接 `pip install axdata`。Windows 使用 PowerShell 命令，macOS/Linux 使用 Bash 命令。想写新插件时，直接跳到 [plugin-development.md](plugin-development.md)。
 
 ## 0. 完整项目和 Web 控制台
 
@@ -82,9 +82,9 @@ npm run dev:web
 http://127.0.0.1:8667
 ```
 
-## 1. 轻量 SDK/CLI 安装
+## 1. Python 包安装
 
-正式发布到 PyPI 后，普通用户就是一条命令：
+只需要 Python SDK/CLI 时，可以直接安装 `axdata` 包：
 
 ```powershell
 pip install axdata
