@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "extended",
+  "servers": [
+    {"name": "扩展市场深圳双线1", "host": "112.74.214.43", "port": 7727, "enabled": true, "priority": 1},
+    {"name": "扩展市场深圳双线2", "host": "120.25.218.6", "port": 7727, "enabled": true, "priority": 2},
+    {"name": "扩展市场深圳双线3", "host": "43.139.173.246", "port": 7727, "enabled": true, "priority": 3},
+    {"name": "扩展市场深圳双线4", "host": "159.75.90.107", "port": 7727, "enabled": true, "priority": 4},
+    {"name": "扩展市场深圳双线5", "host": "106.52.170.195", "port": 7727, "enabled": true, "priority": 5},
+    {"name": "扩展市场广州双线3", "host": "139.9.191.175", "port": 7727, "enabled": true, "priority": 6},
+    {"name": "扩展市场上海双线7", "host": "175.24.47.69", "port": 7727, "enabled": true, "priority": 7},
+    {"name": "扩展市场上海双线1", "host": "150.158.9.199", "port": 7727, "enabled": true, "priority": 8},
+    {"name": "扩展市场上海双线2", "host": "150.158.20.127", "port": 7727, "enabled": true, "priority": 9},
+    {"name": "扩展市场上海双线3", "host": "49.235.119.116", "port": 7727, "enabled": true, "priority": 10},
+    {"name": "扩展市场上海双线4", "host": "49.234.13.160", "port": 7727, "enabled": true, "priority": 11},
+    {"name": "扩展市场广州双线1", "host": "116.205.143.214", "port": 7727, "enabled": true, "priority": 12},
+    {"name": "扩展市场广州双线2", "host": "124.71.223.19", "port": 7727, "enabled": true, "priority": 13},
+    {"name": "扩展市场广州双线4", "host": "113.45.175.47", "port": 7727, "enabled": true, "priority": 14},
+    {"name": "扩展市场上海双线5", "host": "123.60.173.210", "port": 7727, "enabled": true, "priority": 15},
+    {"name": "扩展市场上海双线6", "host": "118.89.69.202", "port": 7727, "enabled": true, "priority": 16}
+  ]
+}

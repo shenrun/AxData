@@ -1,0 +1,370 @@
+"""Tencent Finance source request interface catalog."""
+
+from __future__ import annotations
+
+from axdata_core.sources.base import (
+    RequestExample,
+    RequestField,
+    RequestParameter,
+    SourceRequestInterface,
+)
+
+
+INTERFACES: dict[str, SourceRequestInterface] = {
+    "stock_zh_a_spot_tx": SourceRequestInterface(
+        name="stock_zh_a_spot_tx",
+        display_name_zh="A股实时行情列表",
+        source_code="tencent",
+        source_name_zh="腾讯财经",
+        category="行情数据",
+        request_mode="source_request",
+        first_stage_strategy="临时请求腾讯财经 A 股行情排行列表，默认低页数小样本，不入库。",
+        source_ability="Tencent A-share board rank list",
+        description=(
+            "Return A-share realtime rank-list rows from Tencent Finance. Price fields are in yuan; "
+            "change_pct, turnover_rate, and amplitude are percentage numbers. Amount and market-value "
+            "fields follow Tencent's public API scaling."
+        ),
+        parameters=(
+            RequestParameter("sort_type", "string", False, "Sort key.", "排序字段，默认 price；可选 price、change_pct、volume、amount。", "price"),
+            RequestParameter("direction", "string", False, "Sort direction.", "排序方向：down 降序、up 升序；默认 down。", "down"),
+            RequestParameter("offset", "integer", False, "Row offset.", "起始偏移量，默认 0。", 0),
+            RequestParameter("limit", "integer", False, "Maximum rows, capped at 200.", "返回行数，默认 20，最大 200。", 20),
+        ),
+        fields=(
+            RequestField("instrument_id", "string", "AxData instrument id.", "AxData 统一证券代码。"),
+            RequestField("symbol", "string", "Six-digit symbol.", "六位证券代码。"),
+            RequestField("exchange", "string", "Exchange code.", "交易所代码：SSE、SZSE、BSE。"),
+            RequestField("asset_type", "string", "Asset type.", "资产类型，固定为 stock。"),
+            RequestField("name", "string", "Security short name.", "证券简称。"),
+            RequestField("last_price", "float64", "Latest price.", "最新价，单位：元。"),
+            RequestField("change", "float64", "Price change.", "涨跌额，单位：元。"),
+            RequestField("change_pct", "float64", "Change percent.", "涨跌幅，百分比数值。"),
+            RequestField("amplitude", "float64", "Amplitude percent.", "振幅，百分比数值。"),
+            RequestField("volume", "float64", "Trading volume.", "成交量，沿用腾讯源端口径。"),
+            RequestField("amount", "float64", "Turnover amount.", "成交额，沿用腾讯源端口径。"),
+            RequestField("turnover_rate", "float64", "Turnover rate.", "换手率，百分比数值。"),
+            RequestField("pe_ttm", "float64", "Trailing PE.", "滚动市盈率。"),
+            RequestField("total_market_value", "float64", "Total market value.", "总市值，沿用腾讯源端口径。"),
+            RequestField("float_market_value", "float64", "Float market value.", "流通市值，沿用腾讯源端口径。"),
+            RequestField("quote_state", "string", "Source quote state.", "源端行情状态。"),
+        ),
+        example=RequestExample(
+            request={
+                "params": {"sort_type": "price", "direction": "down", "offset": 0, "limit": 3},
+                "persist": False,
+            },
+            response=(
+                {
+                    "instrument_id": "688808.SH",
+                    "symbol": "688808",
+                    "exchange": "SSE",
+                    "asset_type": "stock",
+                    "name": "联讯仪器",
+                    "last_price": 79.45,
+                    "change": 140.0,
+                    "change_pct": 6.57,
+                    "amplitude": 13.94,
+                    "volume": 19239.58,
+                    "amount": 424746.0,
+                    "turnover_rate": 9.97,
+                    "pe_ttm": 852.97,
+                    "total_market_value": 2330.0,
+                    "float_market_value": 438.02,
+                    "quote_state": "",
+                },
+            ),
+        ),
+    ),
+    "stock_zh_a_hist_tx": SourceRequestInterface(
+        name="stock_zh_a_hist_tx",
+        display_name_zh="A股历史日线",
+        source_code="tencent",
+        source_name_zh="腾讯财经",
+        category="历史行情",
+        request_mode="source_request",
+        first_stage_strategy="临时请求单只 A 股日线小窗口，默认不入库。",
+        source_ability="Tencent A-share daily kline",
+        description=(
+            "Return daily kline rows for one A-share security. Dates are normalized to YYYYMMDD. "
+            "The volume and amount fields follow Tencent's public kline API scaling."
+        ),
+        parameters=(
+            RequestParameter("code", "string", True, "Security code.", "证券代码，支持 000001.SZ、sh600000、000001。"),
+            RequestParameter("start_date", "string", False, "Start date.", "开始日期，YYYYMMDD 或 YYYY-MM-DD；默认 20240101。", "20240101"),
+            RequestParameter("end_date", "string", False, "End date.", "结束日期，YYYYMMDD 或 YYYY-MM-DD；默认等于 start_date。"),
+            RequestParameter("adjust", "string", False, "none, qfq, or hfq.", "复权类型：none 不复权、qfq 前复权、hfq 后复权；默认 none。", "none"),
+            RequestParameter("limit", "integer", False, "Maximum rows after date filtering.", "日期过滤后最多返回行数，默认 120，最大 640。", 120),
+        ),
+        fields=(
+            RequestField("instrument_id", "string", "AxData instrument id.", "AxData 统一证券代码。"),
+            RequestField("symbol", "string", "Six-digit symbol.", "六位证券代码。"),
+            RequestField("exchange", "string", "Exchange code.", "交易所代码：SSE、SZSE、BSE。"),
+            RequestField("asset_type", "string", "Asset type.", "资产类型，固定为 stock。"),
+            RequestField("trade_date", "date/string", "Trading date.", "交易日期，格式 YYYYMMDD。"),
+            RequestField("adjust", "string", "Adjustment type.", "复权类型：none、qfq、hfq。"),
+            RequestField("open", "float64", "Open price.", "开盘价，单位：元。"),
+            RequestField("close", "float64", "Close price.", "收盘价，单位：元。"),
+            RequestField("high", "float64", "High price.", "最高价，单位：元。"),
+            RequestField("low", "float64", "Low price.", "最低价，单位：元。"),
+            RequestField("volume", "float64", "Source volume.", "成交量，沿用腾讯源端日线口径。"),
+            RequestField("amount", "float64", "Source amount.", "成交额，沿用腾讯源端日线口径。"),
+        ),
+        example=RequestExample(
+            request={
+                "params": {
+                    "code": "000001.SZ",
+                    "start_date": "20240102",
+                    "end_date": "20240102",
+                    "adjust": "none",
+                    "limit": 1,
+                },
+                "persist": False,
+            },
+            response=(
+                {
+                    "instrument_id": "000001.SZ",
+                    "symbol": "000001",
+                    "exchange": "SZSE",
+                    "asset_type": "stock",
+                    "trade_date": "20240102",
+                    "adjust": "none",
+                    "open": 9.39,
+                    "close": 9.21,
+                    "high": 9.42,
+                    "low": 9.21,
+                    "volume": 1158366.0,
+                    "amount": 107574.23,
+                },
+            ),
+        ),
+    ),
+    "stock_zh_index_daily_tx": SourceRequestInterface(
+        name="stock_zh_index_daily_tx",
+        display_name_zh="指数历史日线",
+        source_code="tencent",
+        source_name_zh="腾讯财经",
+        category="指数数据",
+        request_mode="source_request",
+        first_stage_strategy="临时请求单只指数日线小窗口，默认不入库。",
+        source_ability="Tencent index daily kline",
+        description=(
+            "Return daily kline rows for one index from Tencent Finance. Dates are normalized to YYYYMMDD. "
+            "Tencent's index endpoint is requested with qfq by default to match the public reference shape."
+        ),
+        parameters=(
+            RequestParameter("code", "string", True, "Index code.", "指数代码，支持 000001.SH、sh000001、399001.SZ。"),
+            RequestParameter("start_date", "string", False, "Start date.", "开始日期，YYYYMMDD 或 YYYY-MM-DD；默认 20240101。", "20240101"),
+            RequestParameter("end_date", "string", False, "End date.", "结束日期，YYYYMMDD 或 YYYY-MM-DD；默认等于 start_date。"),
+            RequestParameter("adjust", "string", False, "none, qfq, or hfq.", "复权/源端复权标记：none、qfq、hfq；默认 qfq。", "qfq"),
+            RequestParameter("limit", "integer", False, "Maximum rows after date filtering.", "日期过滤后最多返回行数，默认 120，最大 640。", 120),
+        ),
+        fields=(
+            RequestField("instrument_id", "string", "AxData instrument id.", "AxData 统一指数代码。"),
+            RequestField("symbol", "string", "Six-digit symbol.", "六位指数代码。"),
+            RequestField("exchange", "string", "Exchange code.", "交易所代码：SSE、SZSE。"),
+            RequestField("asset_type", "string", "Asset type.", "资产类型，固定为 index。"),
+            RequestField("trade_date", "date/string", "Trading date.", "交易日期，格式 YYYYMMDD。"),
+            RequestField("adjust", "string", "Adjustment/source flag.", "复权或源端复权标记：none、qfq、hfq。"),
+            RequestField("open", "float64", "Open level.", "开盘点位。"),
+            RequestField("close", "float64", "Close level.", "收盘点位。"),
+            RequestField("high", "float64", "High level.", "最高点位。"),
+            RequestField("low", "float64", "Low level.", "最低点位。"),
+            RequestField("volume", "float64", "Source volume.", "成交量，沿用腾讯源端指数日线口径。"),
+            RequestField("amount", "float64", "Source amount.", "成交额，沿用腾讯源端指数日线口径。"),
+        ),
+        example=RequestExample(
+            request={
+                "params": {
+                    "code": "000001.SH",
+                    "start_date": "20240102",
+                    "end_date": "20240102",
+                    "adjust": "qfq",
+                    "limit": 1,
+                },
+                "persist": False,
+            },
+            response=(
+                {
+                    "instrument_id": "000001.SH",
+                    "symbol": "000001",
+                    "exchange": "SSE",
+                    "asset_type": "index",
+                    "trade_date": "20240102",
+                    "adjust": "qfq",
+                    "open": 2972.78,
+                    "close": 2962.28,
+                    "high": 2976.27,
+                    "low": 2962.28,
+                    "volume": 304141793.0,
+                    "amount": 34595072.92,
+                },
+            ),
+        ),
+    ),
+    "stock_zh_a_tick_tx_js": SourceRequestInterface(
+        name="stock_zh_a_tick_tx_js",
+        display_name_zh="A股逐笔成交",
+        source_code="tencent",
+        source_name_zh="腾讯财经",
+        category="逐笔数据",
+        request_mode="source_request",
+        first_stage_strategy="临时请求单只股票逐笔成交单页小样本，默认不入库。",
+        source_ability="Tencent A-share tick detail",
+        description=(
+            "Return one page of intraday tick rows for one A-share security. The source page is available "
+            "after market data is published; trade_time is source local time without a date."
+        ),
+        parameters=(
+            RequestParameter("code", "string", True, "Security code.", "证券代码，支持 000001.SZ、sz000001、000001。"),
+            RequestParameter("page", "integer", False, "Source page number.", "源端页码，默认 0。", 0),
+            RequestParameter("limit", "integer", False, "Maximum rows from the page.", "最多返回行数，默认 100，最大 500。", 100),
+        ),
+        fields=(
+            RequestField("instrument_id", "string", "AxData instrument id.", "AxData 统一证券代码。"),
+            RequestField("symbol", "string", "Six-digit symbol.", "六位证券代码。"),
+            RequestField("exchange", "string", "Exchange code.", "交易所代码：SSE、SZSE、BSE。"),
+            RequestField("sequence", "integer", "Source tick sequence.", "源端逐笔序号。"),
+            RequestField("trade_time", "time/string", "Trade time.", "成交时间，源端日内时间 HH:MM:SS。"),
+            RequestField("price", "float64", "Trade price.", "成交价格，单位：元。"),
+            RequestField("change", "float64", "Price change.", "价格变动，单位：元。"),
+            RequestField("volume", "float64", "Trade volume.", "成交量，沿用腾讯源端逐笔口径。"),
+            RequestField("amount", "float64", "Trade amount.", "成交金额，单位：元。"),
+            RequestField("trade_side", "string", "Trade side.", "成交性质：buy 买盘、sell 卖盘、neutral 中性盘。"),
+        ),
+        example=RequestExample(
+            request={
+                "params": {"code": "000001.SZ", "page": 0, "limit": 1},
+                "persist": False,
+            },
+            response=(
+                {
+                    "instrument_id": "000001.SZ",
+                    "symbol": "000001",
+                    "exchange": "SZSE",
+                    "sequence": 0,
+                    "trade_time": "09:25:00",
+                    "price": 10.29,
+                    "change": 0.0,
+                    "volume": 10899.0,
+                    "amount": 11215071.0,
+                    "trade_side": "sell",
+                },
+            ),
+        ),
+    ),
+    "get_tx_start_year": SourceRequestInterface(
+        name="get_tx_start_year",
+        display_name_zh="腾讯历史起始日期",
+        source_code="tencent",
+        source_name_zh="腾讯财经",
+        category="历史行情",
+        request_mode="source_request",
+        first_stage_strategy="临时查询单个证券或指数在腾讯日线接口中的最早可用日期，默认不入库。",
+        source_ability="Tencent earliest kline date helper",
+        description=(
+            "Return the earliest date available from Tencent's kline helper endpoint for one code. "
+            "This is exposed as a source_request-only helper, not as a collectable dataset."
+        ),
+        parameters=(
+            RequestParameter("code", "string", True, "Security or index code.", "证券或指数代码，支持 000001.SH、000001.SZ、sh000001。"),
+        ),
+        fields=(
+            RequestField("instrument_id", "string", "AxData instrument id.", "AxData 统一证券或指数代码。"),
+            RequestField("symbol", "string", "Six-digit symbol.", "六位代码。"),
+            RequestField("exchange", "string", "Exchange code.", "交易所代码：SSE、SZSE、BSE。"),
+            RequestField("asset_type", "string", "Asset type inferred from code.", "资产类型：stock、index 或 etf，按代码规则推断。"),
+            RequestField("start_date", "date/string", "Earliest source date.", "腾讯源端最早可用日期，格式 YYYYMMDD。"),
+            RequestField("source_value", "float64", "Source first value.", "源端首条趋势值；指数为点位，股票为价格。"),
+        ),
+        example=RequestExample(
+            request={"params": {"code": "000001.SH"}, "persist": False},
+            response=(
+                {
+                    "instrument_id": "000001.SH",
+                    "symbol": "000001",
+                    "exchange": "SSE",
+                    "asset_type": "index",
+                    "start_date": "19901219",
+                    "source_value": 113.1,
+                },
+            ),
+        ),
+    ),
+    "tencent_realtime_snapshot": SourceRequestInterface(
+        name="tencent_realtime_snapshot",
+        display_name_zh="实时快照",
+        source_code="tencent",
+        source_name_zh="腾讯财经",
+        category="行情数据",
+        request_mode="source_request",
+        first_stage_strategy="临时请求腾讯财经快照，返回确认过的行情和估值字段，默认不入库。",
+        source_ability="Tencent realtime quote snapshot",
+        description=(
+            "Return realtime quote snapshots. quote_time is the source quote timestamp. "
+            "Price fields are in yuan or index points. change_pct and turnover_rate are percentage numbers. "
+            "Valuation and limit-price fields may be null for index or ETF rows."
+        ),
+        parameters=(
+            RequestParameter("code", "string/list", True, "Security code(s).", "证券代码，支持 000001.SZ、600000.SH、920000.BJ、000001.SH、510050.SH 或列表。"),
+        ),
+        fields=(
+            RequestField("instrument_id", "string", "AxData instrument id.", "AxData 统一证券代码。"),
+            RequestField("symbol", "string", "Six-digit symbol.", "六位证券代码。"),
+            RequestField("exchange", "string", "Exchange code.", "交易所代码：SSE、SZSE、BSE。"),
+            RequestField("asset_type", "string", "Asset type.", "资产类型：stock、index、etf。"),
+            RequestField("name", "string", "Security short name.", "证券简称。"),
+            RequestField("quote_time", "datetime/string", "Source quote timestamp.", "源端行情时间，格式 YYYYMMDDHHMMSS。"),
+            RequestField("last_price", "float64", "Latest price.", "最新价，单位：元或指数点。"),
+            RequestField("pre_close", "float64", "Previous close.", "昨收价，单位：元或指数点。"),
+            RequestField("open", "float64", "Open price.", "开盘价，单位：元或指数点。"),
+            RequestField("high", "float64", "High price.", "最高价，单位：元或指数点。"),
+            RequestField("low", "float64", "Low price.", "最低价，单位：元或指数点。"),
+            RequestField("change", "float64", "Price change.", "涨跌额，单位：元或指数点。"),
+            RequestField("change_pct", "float64", "Change percent.", "涨跌幅，百分比数值。"),
+            RequestField("volume", "float64", "Source volume.", "成交量，沿用源端口径。"),
+            RequestField("amount", "float64", "Turnover amount.", "成交额，单位：元。"),
+            RequestField("turnover_rate", "float64", "Turnover rate.", "换手率，百分比数值；指数可能为空。"),
+            RequestField("pe_dynamic", "float64", "Dynamic PE.", "动态市盈率；不适用时为空。"),
+            RequestField("pb", "float64", "PB ratio.", "市净率；不适用时为空。"),
+            RequestField("total_market_value", "float64", "Total market value.", "总市值，源端确认口径为亿元。"),
+            RequestField("float_market_value", "float64", "Float market value.", "流通市值，源端确认口径为亿元。"),
+            RequestField("limit_up_price", "float64", "Limit-up price.", "涨停价；不适用时为空。"),
+            RequestField("limit_down_price", "float64", "Limit-down price.", "跌停价；不适用时为空。"),
+            RequestField("currency", "string", "Currency.", "币种。"),
+        ),
+        example=RequestExample(
+            request={
+                "params": {"code": ["000001.SZ", "600000.SH"]},
+                "persist": False,
+            },
+            response=(
+                {
+                    "instrument_id": "000001.SZ",
+                    "symbol": "000001",
+                    "exchange": "SZSE",
+                    "asset_type": "stock",
+                    "name": "平安银行",
+                    "quote_time": "20260622144633",
+                    "last_price": 10.64,
+                    "pre_close": 10.52,
+                    "open": 10.52,
+                    "high": 10.67,
+                    "low": 10.42,
+                    "change": 0.12,
+                    "change_pct": 1.14,
+                    "volume": 1208120.0,
+                    "amount": 1273923383.0,
+                    "turnover_rate": 0.62,
+                    "pe_dynamic": 4.8,
+                    "pb": 0.45,
+                    "total_market_value": 2064.79,
+                    "float_market_value": 2064.76,
+                    "limit_up_price": 11.57,
+                    "limit_down_price": 9.47,
+                    "currency": "CNY",
+                },
+            ),
+        ),
+    ),
+}

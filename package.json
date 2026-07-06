@@ -1,0 +1,17 @@
+{
+  "name": "axdata-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev:api": "node scripts/dev-api.mjs",
+    "dev:web": "npm --prefix apps/web run dev",
+    "build:web": "npm --prefix apps/web run build",
+    "build:docs": "python scripts/build_pages.py",
+    "preview:docs": "python -m http.server 8670 -d site",
+    "lint:web": "npm --prefix apps/web run lint",
+    "validate:web-catalog": "node scripts/validate_web_runtime_catalog.mjs"
+  },
+  "workspaces": [
+    "apps/web"
+  ]
+}

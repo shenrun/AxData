@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "axdata-core"
+version = "0.1.0"
+description = "Core schemas, storage, and query helpers for AxData."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+authors = [
+    { name = "AxData" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "pandas>=1.5",
+    "duckdb>=0.9",
+    "lxml>=5.2.0",
+    "packaging>=23",
+]
+
+[project.optional-dependencies]
+parquet = ["pyarrow>=16.0.0"]
+
+[project.scripts]
+axdata = "axdata_core.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["axdata_core*"]
+
+[tool.setuptools.package-data]
+axdata_core = [
+    "_tdx_wire/py.typed",
+    "adapters/tdx/resources/finance_maps/*.dat",
+    "adapters/tdx/resources/finance_maps/*.cfg",
+    "resources/*.json",
+]

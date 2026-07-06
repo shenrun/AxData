@@ -1,0 +1,5 @@
+"""Cninfo source request interfaces."""
+
+from .catalog import INTERFACES
+
+__all__ = ["INTERFACES"]

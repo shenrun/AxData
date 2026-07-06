@@ -1,0 +1,4 @@
+instrument_id,symbol,exchange,asset_type,name,security_full_name,market_code,market,industry_code,industry,region_code,region,company_code,company_short_name,company_full_name,company_short_name_en,company_full_name_en,listing_status,list_date,delist_date,total_share,float_share,is_profit,is_vie,has_weighted_voting_rights,sponsor,share_report_date
+000001.SZ,000001,SZSE,stock,平安银行,,,主板,,J 金融业,,,,,,,,listed,19910403,,194.05,194.05,-,-,-,,
+600000.SH,600000,SSE,stock,浦发银行,浦发银行,1,主板,J,金融业,310000,上海市,600000,浦发银行,上海浦东发展银行股份有限公司,SPD BANK,"Shanghai Pudong Development Bank Co.,Ltd.",listed,19991110,,,,,,,,
+430047.BJ,430047,BSE,stock,诺思兰德,,,北交所,,医药制造业,,北京市,,,,,,listed,20201124,,2.75,1.85,,,,中泰证券,20240102

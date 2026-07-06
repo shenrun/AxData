@@ -1,0 +1,291 @@
+{
+  "manifest_version": "1.0",
+  "plugin_api_version": "1.0",
+  "provider": {
+    "provider_id": "axdata.source.tencent_external",
+    "source_code": "tencent",
+    "source_name_zh": "腾讯财经",
+    "version": "0.1.0",
+    "declared_trust_level": "community",
+    "homepage": null,
+    "license": null,
+    "description": ""
+  },
+  "interfaces": [
+    {
+      "name": "tencent_realtime_snapshot",
+      "display_name_zh": "实时快照",
+      "source_code": "tencent",
+      "source_name_zh": "腾讯财经",
+      "category": "行情数据",
+      "menu_path": [
+        "腾讯财经",
+        "行情数据"
+      ],
+      "asset_class": "stock",
+      "request_mode": "source_request",
+      "collection": {
+        "supported": false,
+        "default_profile": null
+      },
+      "parameters": [
+        {
+          "name": "code",
+          "display_name_zh": "证券代码",
+          "type": "string",
+          "required": true,
+          "multiple": true,
+          "default": null,
+          "enum": [],
+          "control": null,
+          "placeholder": "000001.SZ,600000.SH",
+          "description": "证券代码，支持 000001.SZ、600000.SH、920000.BJ、000001.SH、510050.SH 或列表。"
+        }
+      ],
+      "fields": [
+        {
+          "name": "instrument_id",
+          "display_name_zh": "AxData 统一证券代码",
+          "type": "string",
+          "required": true,
+          "unit": null,
+          "description": "AxData 统一证券代码。"
+        },
+        {
+          "name": "symbol",
+          "display_name_zh": "六位证券代码",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "exchange",
+          "display_name_zh": "交易所",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": "交易所代码：SSE、SZSE、BSE。"
+        },
+        {
+          "name": "asset_type",
+          "display_name_zh": "资产类型",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": "资产类型：stock、index、etf。"
+        },
+        {
+          "name": "name",
+          "display_name_zh": "证券简称",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "quote_time",
+          "display_name_zh": "源端行情时间",
+          "type": "datetime",
+          "required": false,
+          "unit": null,
+          "description": "源端行情时间，格式 YYYYMMDDHHMMSS。"
+        },
+        {
+          "name": "last_price",
+          "display_name_zh": "最新价",
+          "type": "number",
+          "required": false,
+          "unit": "元或指数点",
+          "description": ""
+        },
+        {
+          "name": "pre_close",
+          "display_name_zh": "昨收价",
+          "type": "number",
+          "required": false,
+          "unit": "元或指数点",
+          "description": ""
+        },
+        {
+          "name": "open",
+          "display_name_zh": "开盘价",
+          "type": "number",
+          "required": false,
+          "unit": "元或指数点",
+          "description": ""
+        },
+        {
+          "name": "high",
+          "display_name_zh": "最高价",
+          "type": "number",
+          "required": false,
+          "unit": "元或指数点",
+          "description": ""
+        },
+        {
+          "name": "low",
+          "display_name_zh": "最低价",
+          "type": "number",
+          "required": false,
+          "unit": "元或指数点",
+          "description": ""
+        },
+        {
+          "name": "change",
+          "display_name_zh": "涨跌额",
+          "type": "number",
+          "required": false,
+          "unit": "元或指数点",
+          "description": ""
+        },
+        {
+          "name": "change_pct",
+          "display_name_zh": "涨跌幅",
+          "type": "number",
+          "required": false,
+          "unit": "%",
+          "description": "百分比数值，例如 1.23 表示 1.23%。"
+        },
+        {
+          "name": "volume",
+          "display_name_zh": "成交量",
+          "type": "number",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "amount",
+          "display_name_zh": "成交额",
+          "type": "number",
+          "required": false,
+          "unit": "元",
+          "description": ""
+        },
+        {
+          "name": "turnover_rate",
+          "display_name_zh": "换手率",
+          "type": "number",
+          "required": false,
+          "unit": "%",
+          "description": "百分比数值；指数可能为空。"
+        },
+        {
+          "name": "pe_dynamic",
+          "display_name_zh": "动态市盈率",
+          "type": "number",
+          "required": false,
+          "unit": null,
+          "description": "不适用时为空。"
+        },
+        {
+          "name": "pb",
+          "display_name_zh": "市净率",
+          "type": "number",
+          "required": false,
+          "unit": null,
+          "description": "不适用时为空。"
+        },
+        {
+          "name": "total_market_value",
+          "display_name_zh": "总市值",
+          "type": "number",
+          "required": false,
+          "unit": "亿元",
+          "description": ""
+        },
+        {
+          "name": "float_market_value",
+          "display_name_zh": "流通市值",
+          "type": "number",
+          "required": false,
+          "unit": "亿元",
+          "description": ""
+        },
+        {
+          "name": "limit_up_price",
+          "display_name_zh": "涨停价",
+          "type": "number",
+          "required": false,
+          "unit": "元",
+          "description": "不适用时为空。"
+        },
+        {
+          "name": "limit_down_price",
+          "display_name_zh": "跌停价",
+          "type": "number",
+          "required": false,
+          "unit": "元",
+          "description": "不适用时为空。"
+        },
+        {
+          "name": "currency",
+          "display_name_zh": "币种",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        }
+      ],
+      "examples": [
+        {
+          "title": "批量实时快照",
+          "request": {
+            "interface_name": "tencent_realtime_snapshot",
+            "params": {
+              "code": [
+                "000001.SZ",
+                "600000.SH"
+              ]
+            },
+            "fields": [
+              "instrument_id",
+              "name",
+              "last_price",
+              "quote_time"
+            ]
+          },
+          "response": {
+            "data": [
+              {
+                "instrument_id": "000001.SZ",
+                "name": "平安银行",
+                "quote_time": "20260622144633",
+                "last_price": 10.64
+              }
+            ],
+            "schema": [
+              {
+                "name": "instrument_id",
+                "type": "string"
+              },
+              {
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "name": "quote_time",
+                "type": "datetime"
+              },
+              {
+                "name": "last_price",
+                "type": "number"
+              }
+            ],
+            "meta": {
+              "source": "tencent"
+            }
+          },
+          "request_time": "2026-06-22T14:46:33+08:00"
+        }
+      ],
+      "limits": {},
+      "notes": "通过腾讯财经公开行情接口临时请求实时快照，默认不入库。quote_time 是源端行情时间。"
+    }
+  ],
+  "downloaders": [],
+  "required_config": [],
+  "resources": {},
+  "build": {}
+}

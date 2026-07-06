@@ -1,0 +1,384 @@
+{
+  "manifest_version": "1.0",
+  "plugin_api_version": "1.0",
+  "provider": {
+    "provider_id": "axdata.source.cninfo_external",
+    "source_code": "cninfo",
+    "source_name_zh": "巨潮",
+    "version": "0.1.0",
+    "declared_trust_level": "community",
+    "homepage": null,
+    "license": null,
+    "description": ""
+  },
+  "interfaces": [
+    {
+      "name": "cninfo_announcements",
+      "display_name_zh": "公告列表",
+      "source_code": "cninfo",
+      "source_name_zh": "巨潮",
+      "category": "公告数据",
+      "menu_path": [
+        "巨潮",
+        "公告数据"
+      ],
+      "asset_class": "stock",
+      "request_mode": "source_request",
+      "collection": {
+        "supported": false,
+        "default_profile": null
+      },
+      "parameters": [
+        {
+          "name": "code",
+          "display_name_zh": "股票代码",
+          "type": "string",
+          "required": true,
+          "multiple": true,
+          "default": null,
+          "enum": [],
+          "control": null,
+          "placeholder": "000001.SZ,600000.SH",
+          "description": "股票代码，支持 000001、000001.SZ、sh600000 或列表。"
+        },
+        {
+          "name": "start_date",
+          "display_name_zh": "开始日期",
+          "type": "date",
+          "required": false,
+          "multiple": false,
+          "default": null,
+          "enum": [],
+          "control": null,
+          "placeholder": "20240101",
+          "description": "开始日期，YYYYMMDD 或 YYYY-MM-DD。"
+        },
+        {
+          "name": "end_date",
+          "display_name_zh": "结束日期",
+          "type": "date",
+          "required": false,
+          "multiple": false,
+          "default": null,
+          "enum": [],
+          "control": null,
+          "placeholder": "20240131",
+          "description": "结束日期，YYYYMMDD 或 YYYY-MM-DD。"
+        },
+        {
+          "name": "page",
+          "display_name_zh": "页码",
+          "type": "integer",
+          "required": false,
+          "multiple": false,
+          "default": 1,
+          "enum": [],
+          "control": null,
+          "placeholder": null,
+          "description": "页码，默认 1。"
+        },
+        {
+          "name": "limit",
+          "display_name_zh": "每页条数",
+          "type": "integer",
+          "required": false,
+          "multiple": false,
+          "default": 30,
+          "enum": [],
+          "control": null,
+          "placeholder": null,
+          "description": "每页条数，默认 30，最大 100。"
+        }
+      ],
+      "fields": [
+        {
+          "name": "instrument_id",
+          "display_name_zh": "AxData 统一证券代码",
+          "type": "string",
+          "required": true,
+          "unit": null,
+          "description": "AxData 统一证券代码。"
+        },
+        {
+          "name": "symbol",
+          "display_name_zh": "六位证券代码",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "exchange",
+          "display_name_zh": "交易所",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": "交易所代码：SSE、SZSE、BSE。"
+        },
+        {
+          "name": "name",
+          "display_name_zh": "证券简称",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "announcement_id",
+          "display_name_zh": "公告 ID",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "title",
+          "display_name_zh": "公告标题",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "publish_date",
+          "display_name_zh": "公告发布日期",
+          "type": "date",
+          "required": false,
+          "unit": null,
+          "description": "公告发布日期，格式 YYYYMMDD。"
+        },
+        {
+          "name": "file_type",
+          "display_name_zh": "附件类型",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "file_size_kb",
+          "display_name_zh": "附件大小",
+          "type": "number",
+          "required": false,
+          "unit": "KB",
+          "description": ""
+        },
+        {
+          "name": "download_url",
+          "display_name_zh": "PDF 下载地址",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        }
+      ],
+      "examples": [
+        {
+          "title": "查询单只股票公告",
+          "request": {
+            "interface_name": "cninfo_announcements",
+            "params": {
+              "code": "000001.SZ",
+              "start_date": "20240101",
+              "end_date": "20240131",
+              "limit": 3
+            },
+            "fields": [
+              "instrument_id",
+              "title",
+              "publish_date",
+              "download_url"
+            ]
+          },
+          "response": {
+            "data": [
+              {
+                "instrument_id": "000001.SZ",
+                "title": "关联交易公告",
+                "publish_date": "20240123",
+                "download_url": "https://static.cninfo.com.cn/finalpage/2024-01-23/1218968511.PDF"
+              }
+            ],
+            "schema": [
+              {
+                "name": "instrument_id",
+                "type": "string"
+              },
+              {
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "name": "publish_date",
+                "type": "date"
+              },
+              {
+                "name": "download_url",
+                "type": "string"
+              }
+            ],
+            "meta": {
+              "source": "cninfo"
+            }
+          },
+          "request_time": "2026-06-22T14:46:33+08:00"
+        }
+      ],
+      "limits": {},
+      "notes": "临时请求巨潮公告列表，返回公告元信息，默认不入库。"
+    },
+    {
+      "name": "cninfo_announcement_detail",
+      "display_name_zh": "公告PDF元信息",
+      "source_code": "cninfo",
+      "source_name_zh": "巨潮",
+      "category": "公告数据",
+      "menu_path": [
+        "巨潮",
+        "公告数据"
+      ],
+      "asset_class": "stock",
+      "request_mode": "source_request",
+      "collection": {
+        "supported": false,
+        "default_profile": null
+      },
+      "parameters": [
+        {
+          "name": "announcement_id",
+          "display_name_zh": "公告 ID",
+          "type": "string",
+          "required": false,
+          "multiple": false,
+          "default": null,
+          "enum": [],
+          "control": null,
+          "placeholder": null,
+          "description": "公告 ID；可选。"
+        },
+        {
+          "name": "url",
+          "display_name_zh": "公告 PDF 路径",
+          "type": "string",
+          "required": true,
+          "multiple": false,
+          "default": null,
+          "enum": [],
+          "control": null,
+          "placeholder": "https://static.cninfo.com.cn/finalpage/2024-01-23/1218968511.PDF",
+          "description": "公告 PDF 路径或完整 URL。"
+        },
+        {
+          "name": "title",
+          "display_name_zh": "公告标题",
+          "type": "string",
+          "required": false,
+          "multiple": false,
+          "default": null,
+          "enum": [],
+          "control": null,
+          "placeholder": null,
+          "description": "可选公告标题，用于透传。"
+        }
+      ],
+      "fields": [
+        {
+          "name": "announcement_id",
+          "display_name_zh": "公告 ID",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "title",
+          "display_name_zh": "公告标题",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "content_type",
+          "display_name_zh": "文件类型",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        },
+        {
+          "name": "file_size_bytes",
+          "display_name_zh": "文件大小",
+          "type": "integer",
+          "required": false,
+          "unit": "字节",
+          "description": ""
+        },
+        {
+          "name": "download_url",
+          "display_name_zh": "PDF 下载地址",
+          "type": "string",
+          "required": false,
+          "unit": null,
+          "description": ""
+        }
+      ],
+      "examples": [
+        {
+          "title": "查询公告 PDF 元信息",
+          "request": {
+            "interface_name": "cninfo_announcement_detail",
+            "params": {
+              "announcement_id": "1218968511",
+              "url": "https://static.cninfo.com.cn/finalpage/2024-01-23/1218968511.PDF"
+            },
+            "fields": [
+              "announcement_id",
+              "content_type",
+              "file_size_bytes",
+              "download_url"
+            ]
+          },
+          "response": {
+            "data": [
+              {
+                "announcement_id": "1218968511",
+                "content_type": "application/pdf",
+                "file_size_bytes": 158287,
+                "download_url": "https://static.cninfo.com.cn/finalpage/2024-01-23/1218968511.PDF"
+              }
+            ],
+            "schema": [
+              {
+                "name": "announcement_id",
+                "type": "string"
+              },
+              {
+                "name": "content_type",
+                "type": "string"
+              },
+              {
+                "name": "file_size_bytes",
+                "type": "integer"
+              },
+              {
+                "name": "download_url",
+                "type": "string"
+              }
+            ],
+            "meta": {
+              "source": "cninfo"
+            }
+          },
+          "request_time": "2026-06-22T14:46:33+08:00"
+        }
+      ],
+      "limits": {},
+      "notes": "只确认公告 PDF 的类型、大小和下载地址，不解析 PDF 正文。"
+    }
+  ],
+  "downloaders": [],
+  "required_config": [],
+  "resources": {},
+  "build": {}
+}

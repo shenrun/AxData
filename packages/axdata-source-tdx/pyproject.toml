@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "axdata-source-tdx"
+version = "0.1.0"
+description = "TDX quote source provider for AxData"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "axdata-core>=0.1.0",
+]
+authors = [
+  { name = "AxData" },
+]
+license = "Apache-2.0"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+
+[project.entry-points."axdata.providers"]
+tdx = "axdata_source_tdx.provider:provider"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["axdata_source_tdx*"]
+
+[tool.setuptools.package-data]
+axdata_source_tdx = [
+  "axdata-provider.json",
+  "resources/*.json",
+  "resources/finance_maps/*.dat",
+  "resources/finance_maps/*.cfg",
+  "_tdx_wire/py.typed",
+]
